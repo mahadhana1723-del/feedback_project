@@ -35,20 +35,20 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // 🔥 ఇక్కడ మీ Firebase Config paste చేయాలి
+        // 🔥 మీ వివరాలతో అప్డేట్ చేయబడిన Config
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY_HERE",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "SENDER_ID",
-            appId: "APP_ID"
+            apiKey: "AIzaSyCpEMtX1eP7YwZDH0qLBRGci6VkhBgcJVo",
+            authDomain: "feedback-4ace7.firebaseapp.com",
+            projectId: "feedback-4ace7",
+            storageBucket: "feedback-4ace7.firebasestorage.app",
+            messagingSenderId: "331705524032",
+            appId: "1:331705524032:web:7e8d046e71984f74a6e4a5",
+            measurementId: "G-0WL2N0YFQ1"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Send Feedback Function needs to be global
         window.sendFeedback = async function() {
             const msg = document.getElementById('messageBox').value;
             const status = document.getElementById('statusMsg');
@@ -61,10 +61,10 @@
             try {
                 await addDoc(collection(db, "feedbacks"), {
                     message: msg,
-                    date: serverTimestamp() // Time store chestundi
+                    date: serverTimestamp()
                 });
 
-                document.getElementById('messageBox').value = ""; // Clear box
+                document.getElementById('messageBox').value = ""; 
                 status.classList.remove('hidden');
                 setTimeout(() => status.classList.add('hidden'), 3000);
             } catch (e) {
