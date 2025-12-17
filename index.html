@@ -3,39 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anonymous Feedback</title>
+    <title>Anonymous Feedback & Rating</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { background-color: #f3f4f6; font-family: sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        /* Star Rating Styles */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .star-rating input {
+            display: none;
+        }
+        .star-rating label {
+            color: #d1d5db; /* Gray by default */
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        /* Hover and Checked states */
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #fbbf24; /* Gold color */
+        }
     </style>
 </head>
-<body class="flex items-center justify-center h-screen px-4">
+<body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">🏸 Player Feedback</h2>
-        <p class="text-gray-500 text-sm mb-6 text-center">
-            మీ పేరు ఎక్కడా కనిపించదు. మీ సలహాలు లేదా సమస్యలు ఇక్కడ చెప్పండి.
-        </p>
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all">
+        <div class="text-center mb-6">
+            <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <i class="fa-solid fa-comments text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-gray-800">Feed Back</h2>
+            <p class="text-gray-500 text-sm mt-2">
+                మీ పేరు బయటపడదు (Anonymous). మీ విలువైన సలహాలు మరియు రేటింగ్ ఇవ్వండి.
+            </p>
+        </div>
 
-        <textarea id="messageBox" rows="5" 
-            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Write your suggestion here..."></textarea>
+        <div class="mb-6 text-center">
+            <p class="text-gray-700 font-semibold mb-2">మీ అనుభవాన్ని రేట్ చేయండి:</p>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="Excellent"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="Good"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="Average"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="Poor"><i class="fa-solid fa-star"></i></label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="Very Poor"><i class="fa-solid fa-star"></i></label>
+            </div>
+        </div>
 
-        <button onclick="sendFeedback()" 
-            class="mt-4 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition">
-            Send Anonymous Message
+        <div class="mb-4">
+            <label for="messageBox" class="block text-gray-700 font-semibold mb-2">మీ సలహా లేదా సమస్య:</label>
+            <textarea id="messageBox" rows="4" 
+                class="w-full p-4 border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
+                placeholder="ఇక్కడ టైప్ చేయండి..."></textarea>
+        </div>
+
+        <button onclick="sendFeedback()" id="sendBtn"
+            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center shadow-md">
+            <i class="fa-solid fa-paper-plane mr-2"></i> పంపండి (Send)
         </button>
 
-        <p id="statusMsg" class="mt-4 text-center text-sm font-semibold text-green-600 hidden">
-            ✅ Message Sent Successfully!
-        </p>
+        <div id="statusMsg" class="mt-4 text-center hidden p-3 rounded-lg">
+        </div>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // 🔥 మీ వివరాలతో అప్డేట్ చేయబడిన Config
+        // 🔥 పాత కాన్ఫిగ్ అలాగే ఉంది.
         const firebaseConfig = {
             apiKey: "AIzaSyCpEMtX1eP7YwZDH0qLBRGci6VkhBgcJVo",
             authDomain: "feedback-4ace7.firebaseapp.com",
@@ -50,27 +95,64 @@
         const db = getFirestore(app);
 
         window.sendFeedback = async function() {
-            const msg = document.getElementById('messageBox').value;
+            const msgInput = document.getElementById('messageBox');
+            const msg = msgInput.value.trim();
             const status = document.getElementById('statusMsg');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            // Get selected rating
+            const ratingInput = document.querySelector('input[name="rating"]:checked');
+            let ratingVal = ratingInput ? parseInt(ratingInput.value) : null;
 
-            if(msg.trim() === "") {
-                alert("Please write something first!");
+            // Validation: Either message or rating must be present
+            if(msg === "" && ratingVal === null) {
+                showStatus("దయచేసి మెసేజ్ రాయండి లేదా రేటింగ్ ఇవ్వండి.", "error");
                 return;
             }
 
-            try {
-                await addDoc(collection(db, "feedbacks"), {
-                    message: msg,
-                    date: serverTimestamp()
-                });
+            // Disable button while sending
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> పంపుతోంది...';
 
-                document.getElementById('messageBox').value = ""; 
-                status.classList.remove('hidden');
-                setTimeout(() => status.classList.add('hidden'), 3000);
+            try {
+                // Prepare data to send
+                const dataToSend = {
+                    date: serverTimestamp()
+                };
+                if (msg !== "") dataToSend.message = msg;
+                if (ratingVal !== null) dataToSend.rating = ratingVal;
+
+                await addDoc(collection(db, "feedbacks"), dataToSend);
+
+                // Success actions
+                msgInput.value = ""; 
+                if(ratingInput) ratingInput.checked = false; // Reset stars
+                showStatus("✅ మీ ఫీడ్‌బ్యాక్ విజయవంతంగా పంపబడింది!", "success");
+
             } catch (e) {
-                console.error("Error adding document: ", e);
-                alert("Error sending message. Check console.");
+                console.error("Error:", e);
+                showStatus("❌ పంపడంలో సమస్య ఏర్పడింది. దయచేసి మళ్ళీ ప్రయత్నించండి.", "error");
+            } finally {
+                // Re-enable button
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> పంపండి (Send)';
             }
+        }
+
+        // Helper function for showing status messages
+        function showStatus(message, type) {
+            const status = document.getElementById('statusMsg');
+            status.textContent = message;
+            status.className = "mt-4 text-center p-3 rounded-lg font-semibold";
+            
+            if(type === "success") {
+                status.classList.add("bg-green-100", "text-green-700");
+            } else {
+                status.classList.add("bg-red-100", "text-red-700");
+            }
+            
+            status.classList.remove('hidden');
+            setTimeout(() => status.classList.add('hidden'), 3000);
         }
     </script>
 </body>
