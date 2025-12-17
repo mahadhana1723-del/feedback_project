@@ -3,84 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anonymous Feedback & Rating</title>
+    <title>Railway Incharge Feedback</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Ramabhadra&display=swap');
+        
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Railway Blue Theme */
         }
-        /* Star Rating Styles */
-        .star-rating {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: center;
-            gap: 0.5rem;
+        .telugu-text {
+            font-family: 'Ramabhadra', sans-serif;
+            font-size: 0.95rem;
+            color: #4b5563;
         }
-        .star-rating input {
-            display: none;
+        .question-card {
+            transition: all 0.3s ease;
         }
-        .star-rating label {
-            color: #d1d5db; /* Gray by default */
-            font-size: 2rem;
-            cursor: pointer;
-            transition: color 0.2s;
+        .question-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        /* Hover and Checked states */
-        .star-rating input:checked ~ label,
-        .star-rating label:hover,
-        .star-rating label:hover ~ label {
-            color: #fbbf24; /* Gold color */
+        input[type="radio"] {
+            accent-color: #1e3c72;
+            width: 1.2em;
+            height: 1.2em;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="py-10 px-4">
 
-    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-lg transform transition-all">
-        <div class="text-center mb-6">
-            <div class="bg-blue-100 text-blue-600 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <i class="fa-solid fa-comments text-3xl"></i>
+    <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+        
+        <div class="bg-blue-900 p-6 text-center text-white border-b-4 border-yellow-500">
+            <div class="flex justify-center mb-3">
+                <i class="fa-solid fa-train-subway text-4xl"></i>
             </div>
-            <h2 class="text-2xl font-bold text-gray-800">Feed Back</h2>
-            <p class="text-gray-500 text-sm mt-2">
-                మీ పేరు బయటపడదు (Anonymous). మీ విలువైన సలహాలు మరియు రేటింగ్ ఇవ్వండి.
+            <h1 class="text-2xl font-bold mb-1">Railway Staff Feedback Form</h1>
+            <p class="text-gray-300 text-sm">
+                Feedback regarding Incharge/Supervisor.<br>
+                <span class="telugu-text text-gray-200">మీ వివరాలు ఎక్కడా కనిపించవు (Anonymous).</span>
             </p>
         </div>
 
-        <div class="mb-6 text-center">
-            <p class="text-gray-700 font-semibold mb-2">మీ అనుభవాన్ని రేట్ చేయండి:</p>
-            <div class="star-rating">
-                <input type="radio" id="star5" name="rating" value="5"><label for="star5" title="Excellent"><i class="fa-solid fa-star"></i></label>
-                <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="Good"><i class="fa-solid fa-star"></i></label>
-                <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="Average"><i class="fa-solid fa-star"></i></label>
-                <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="Poor"><i class="fa-solid fa-star"></i></label>
-                <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="Very Poor"><i class="fa-solid fa-star"></i></label>
+        <form id="feedbackForm" class="p-6 space-y-8">
+            
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">1. Is the Duty Roster prepared fairly for everyone?</p>
+                <p class="telugu-text mb-3">డ్యూటీ రోస్టర్ అందరికీ సమానంగా వేస్తున్నారా (పక్షపాతం లేకుండా)?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q1" value="Fair Roster"> <span>Yes, Fair (అందరికీ సమానమే)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q1" value="Mostly Fair"> <span>Mostly Fair (చాలా వరకు పర్లేదు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q1" value="Partiality Exists"> <span>Partiality Exists (పక్షపాతం చూపిస్తున్నారు)</span></label>
+                </div>
             </div>
-        </div>
 
-        <div class="mb-4">
-            <label for="messageBox" class="block text-gray-700 font-semibold mb-2">మీ సలహా లేదా సమస్య:</label>
-            <textarea id="messageBox" rows="4" 
-                class="w-full p-4 border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-gray-50"
-                placeholder="ఇక్కడ టైప్ చేయండి..."></textarea>
-        </div>
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">2. Does he sanction Leaves/Passes/PTOs on time?</p>
+                <p class="telugu-text mb-3">లీవులు లేదా పాసులు/PTO అడిగినప్పుడు ఇబ్బంది పెట్టకుండా ఇస్తున్నారా?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q2" value="Very Supportive"> <span>Very Supportive (వెంటనే ఇస్తారు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q2" value="Sometimes Delays"> <span>Sometimes Delays (అప్పుడప్పుడు ఆలస్యం)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q2" value="Harasses/Refuses"> <span>Harasses (ఇబ్బంది పెడతారు/తిరస్కరిస్తారు)</span></label>
+                </div>
+            </div>
 
-        <button onclick="sendFeedback()" id="sendBtn"
-            class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-3 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center shadow-md">
-            <i class="fa-solid fa-paper-plane mr-2"></i> పంపండి (Send)
-        </button>
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">3. How does he speak with the staff?</p>
+                <p class="telugu-text mb-3">స్టాఫ్ తో ఇన్‌ఛార్జ్ మాట్లాడే విధానం ఎలా ఉంది?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q3" value="Respectful"> <span>Respectful (గౌరవంగా)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q3" value="Strict but OK"> <span>Strict but OK (కఠినంగా ఉన్నా పర్లేదు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q3" value="Rude/Abusive"> <span>Rude/Abusive (దురుసుగా/బూతులు)</span></label>
+                </div>
+            </div>
 
-        <div id="statusMsg" class="mt-4 text-center hidden p-3 rounded-lg">
-        </div>
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">4. Does he provide technical guidance when work is difficult?</p>
+                <p class="telugu-text mb-3">పనిలో సందేహాలు వస్తే గైడెన్స్ ఇస్తున్నారా?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q4" value="Good Guidance"> <span>Good Guidance (బాగా చెప్తారు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q4" value="Average"> <span>Average (పర్లేదు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q4" value="No Guidance"> <span>No Guidance (చెప్పరు, పైగా అరుస్తారు)</span></label>
+                </div>
+            </div>
+
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">5. Does he respond to staff welfare issues (Quarters/Water etc.)?</p>
+                <p class="telugu-text mb-3">స్టాఫ్ సమస్యలు (క్వార్టర్స్, నీళ్లు, కరెంటు) చెప్పినప్పుడు స్పందిస్తున్నారా?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q5" value="Helps Immediately"> <span>Helps Immediately (వెంటనే స్పందిస్తారు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q5" value="Ignores"> <span>Ignores (పట్టించుకోరు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q5" value="Says Not My Job"> <span>Says Not My Job (నాకు సంబంధం లేదు అంటారు)</span></label>
+                </div>
+            </div>
+
+             <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">6. Is he available on phone during emergencies/duty hours?</p>
+                <p class="telugu-text mb-3">డ్యూటీలో అర్జెంట్ ఉంటే ఫోన్ లిఫ్ట్ చేస్తారా/అందుబాటులో ఉంటారా?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q6" value="Always Available"> <span>Available (అందుబాటులో ఉంటారు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q6" value="Rarely"> <span>Rarely (ఎప్పుడో ఒకసారి)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q6" value="Never/Switched Off"> <span>Never (ఫోన్ ఎత్తరు/స్విచ్ ఆఫ్)</span></label>
+                </div>
+            </div>
+
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">7. Does he put unnecessary work pressure on staff?</p>
+                <p class="telugu-text mb-3">అనవసరమైన పని ఒత్తిడి (Mental Pressure) పెడుతున్నారా?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q7" value="No Pressure"> <span>No, Good Environment (లేదు, బాగుంటుంది)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q7" value="Sometimes"> <span>Sometimes (అప్పుడప్పుడు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q7" value="Too Much Pressure"> <span>Too Much Pressure (చాలా ఒత్తిడి ఉంది)</span></label>
+                </div>
+            </div>
+
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">8. Does he follow/instruct proper Safety Rules?</p>
+                <p class="telugu-text mb-3">సేఫ్టీ (Safety) విషయంలో జాగ్రత్తలు పాటిస్తున్నారా/చెబుతున్నారా?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q8" value="Very Strict on Safety"> <span>Yes, Strict (సేఫ్టీ విషయంలో కచ్చితంగా ఉంటారు)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q8" value="Casual"> <span>Casual (లైట్ తీసుకుంటారు)</span></label>
+                </div>
+            </div>
+
+            <div class="question-card bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <p class="font-bold text-gray-800 mb-1">9. Does the Incharge come to Office/Site on time?</p>
+                <p class="telugu-text mb-3">ఇన్‌ఛార్జ్ ఆఫీస్ లేదా సైట్ కి టైంకి వస్తున్నారా?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q9" value="On Time"> <span>Yes, On Time (సమయానికి)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q9" value="Late"> <span>Often Late (ఆలస్యంగా)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q9" value="Very Irregular"> <span>Irregular (ఎప్పుడో ఒకసారి వస్తారు)</span></label>
+                </div>
+            </div>
+
+            <div class="question-card bg-blue-50 p-4 rounded-xl border border-blue-200">
+                <p class="font-bold text-blue-900 mb-1">10. Overall Rating for the Incharge?</p>
+                <p class="telugu-text mb-3">మొత్తంగా ఇన్‌ఛార్జ్ పనితీరుకి మీ రేటింగ్?</p>
+                <div class="space-y-2">
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q10" value="5 Stars"> <span class="text-yellow-500 text-xl">★★★★★ (Excellent)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q10" value="4 Stars"> <span class="text-yellow-500 text-xl">★★★★ (Good)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q10" value="3 Stars"> <span class="text-yellow-500 text-xl">★★★ (Average)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q10" value="2 Stars"> <span class="text-yellow-500 text-xl">★★ (Bad)</span></label>
+                    <label class="flex items-center space-x-3 cursor-pointer"><input type="radio" name="q10" value="1 Star"> <span class="text-yellow-500 text-xl">★ (Very Bad)</span></label>
+                </div>
+            </div>
+
+            <button type="button" onclick="sendFeedback()" id="sendBtn"
+                class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white font-bold py-4 px-6 rounded-xl hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg text-lg">
+                Submit Feedback (పంపండి)
+            </button>
+
+            <div id="statusMsg" class="hidden text-center p-4 rounded-lg font-bold"></div>
+        </form>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // 🔥 పాత కాన్ఫిగ్ అలాగే ఉంది.
+        // 🔥 మీ పాత కాన్ఫిగ్ అలాగే ఉంది.
         const firebaseConfig = {
             apiKey: "AIzaSyCpEMtX1eP7YwZDH0qLBRGci6VkhBgcJVo",
             authDomain: "feedback-4ace7.firebaseapp.com",
@@ -95,64 +179,53 @@
         const db = getFirestore(app);
 
         window.sendFeedback = async function() {
-            const msgInput = document.getElementById('messageBox');
-            const msg = msgInput.value.trim();
-            const status = document.getElementById('statusMsg');
             const sendBtn = document.getElementById('sendBtn');
+            const status = document.getElementById('statusMsg');
             
-            // Get selected rating
-            const ratingInput = document.querySelector('input[name="rating"]:checked');
-            let ratingVal = ratingInput ? parseInt(ratingInput.value) : null;
+            let feedbackData = {
+                date: serverTimestamp()
+            };
 
-            // Validation: Either message or rating must be present
-            if(msg === "" && ratingVal === null) {
-                showStatus("దయచేసి మెసేజ్ రాయండి లేదా రేటింగ్ ఇవ్వండి.", "error");
-                return;
+            // Check if all 10 questions are answered
+            for (let i = 1; i <= 10; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!selected) {
+                    alert(`Please answer Question ${i} \nదయచేసి ${i}వ ప్రశ్నకు సమాధానం ఇవ్వండి.`);
+                    
+                    const questionCard = document.querySelector(`input[name="q${i}"]`).closest('.question-card');
+                    questionCard.scrollIntoView({behavior: "smooth", block: "center"});
+                    questionCard.classList.add('border-red-500', 'border-2');
+                    setTimeout(() => questionCard.classList.remove('border-red-500', 'border-2'), 2000);
+                    
+                    return; 
+                }
+                feedbackData[`q${i}`] = selected.value; 
             }
 
-            // Disable button while sending
+            // Disable button
             sendBtn.disabled = true;
-            sendBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> పంపుతోంది...';
+            sendBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Submitting...';
 
             try {
-                // Prepare data to send
-                const dataToSend = {
-                    date: serverTimestamp()
-                };
-                if (msg !== "") dataToSend.message = msg;
-                if (ratingVal !== null) dataToSend.rating = ratingVal;
+                await addDoc(collection(db, "feedbacks"), feedbackData);
 
-                await addDoc(collection(db, "feedbacks"), dataToSend);
+                document.getElementById("feedbackForm").reset();
+                status.textContent = "✅ Feedback Submitted Successfully!";
+                status.className = "bg-green-100 text-green-800 p-4 rounded-lg text-center font-bold block mt-4";
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
 
-                // Success actions
-                msgInput.value = ""; 
-                if(ratingInput) ratingInput.checked = false; // Reset stars
-                showStatus("✅ మీ ఫీడ్‌బ్యాక్ విజయవంతంగా పంపబడింది!", "success");
+                setTimeout(() => {
+                    status.className = "hidden";
+                }, 4000);
 
             } catch (e) {
                 console.error("Error:", e);
-                showStatus("❌ పంపడంలో సమస్య ఏర్పడింది. దయచేసి మళ్ళీ ప్రయత్నించండి.", "error");
+                alert("Error submitting feedback. Please check internet.");
             } finally {
-                // Re-enable button
                 sendBtn.disabled = false;
-                sendBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i> పంపండి (Send)';
+                sendBtn.innerHTML = 'Submit Feedback (పంపండి)';
             }
-        }
-
-        // Helper function for showing status messages
-        function showStatus(message, type) {
-            const status = document.getElementById('statusMsg');
-            status.textContent = message;
-            status.className = "mt-4 text-center p-3 rounded-lg font-semibold";
-            
-            if(type === "success") {
-                status.classList.add("bg-green-100", "text-green-700");
-            } else {
-                status.classList.add("bg-red-100", "text-red-700");
-            }
-            
-            status.classList.remove('hidden');
-            setTimeout(() => status.classList.add('hidden'), 3000);
         }
     </script>
 </body>
