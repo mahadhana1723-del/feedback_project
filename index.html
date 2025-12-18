@@ -51,7 +51,7 @@
 </head>
 <body class="py-10 px-4">
 
-    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden" id="mainContainer">
         
         <div class="bg-blue-900 p-6 text-center text-white border-b-4 border-yellow-500">
             <div class="flex justify-center mb-3">
@@ -228,7 +228,6 @@
             };
 
             // 1. Validate Star Ratings (Q1 to Q8 only)
-            // మేము 1 నుండి 8 వరకు మాత్రమే లూప్ చేస్తున్నాము, ఎందుకంటే అవి పై వరుసలో ఉన్నాయి.
             for (let i = 1; i <= 8; i++) {
                 const selected = document.querySelector(`input[name="q${i}"]:checked`);
                 if (!selected) {
@@ -244,13 +243,11 @@
                 feedbackData[`q${i}`] = parseInt(selected.value); 
             }
 
-            // 2. Validate Text Answers (Visually Q9 & Q10, Internal IDs q10 & q11)
-            // HTMLలో నంబర్లు 9 మరియు 10 టెక్స్ట్ బాక్సులకు ఉన్నాయి.
+            // 2. Validate Text Answers
             const q10Val = document.getElementById('q10').value.trim();
             const q11Val = document.getElementById('q11').value.trim();
 
             if(q10Val === "") {
-                // ఇది ఐడి q10, కానీ స్క్రీన్ పై 9వ ప్రశ్న
                 alert("Please answer Question 9 (LR Suggestions).\nదయచేసి 9వ ప్రశ్నకు (LR Suggestions) సమాధానం రాయండి.");
                 const el = document.getElementById('q10');
                 el.focus();
@@ -258,7 +255,6 @@
                 return;
             }
             if(q11Val === "") {
-                // ఇది ఐడి q11, కానీ స్క్రీన్ పై 10వ ప్రశ్న
                 alert("Please answer Question 10 (General Suggestions).\nదయచేసి 10వ ప్రశ్నకు (General Suggestions) సమాధానం రాయండి.");
                 const el = document.getElementById('q11');
                 el.focus();
@@ -269,8 +265,7 @@
             feedbackData['q10'] = q10Val;
             feedbackData['q11'] = q11Val;
 
-            // 3. Validate OVERALL RATING (Internal Name q9, Visually Last Card)
-            // ఇది చివరన ఉన్న గోల్డ్ బాక్స్.
+            // 3. Validate OVERALL RATING
             const q9Selected = document.querySelector('input[name="q9"]:checked');
             if (!q9Selected) {
                 alert("Please provide the Overall Rating (Last Question).\nదయచేసి చివరన ఉన్న 'Overall Rating' ఇవ్వండి.");
@@ -292,22 +287,40 @@
                 await addDoc(collection(db, "feedbacks"), feedbackData);
 
                 document.getElementById("feedbackForm").reset();
-                status.textContent = "✅ Feedback Submitted Successfully!";
+                
+                // Show Success Message
+                status.textContent = "✅ Feedback Submitted! Closing in 3 seconds...";
                 status.className = "bg-green-100 text-green-800 p-4 rounded-lg text-center font-bold block mt-4";
+                status.classList.remove("hidden");
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
 
+                // Wait 3 seconds then close
                 setTimeout(() => {
-                    status.className = "hidden";
-                }, 4000);
+                    // Try to close the window
+                    window.close();
+                    
+                    // If window.close() is blocked (common in modern browsers), replace body with Thank You screen
+                    if(!window.closed) {
+                        document.body.innerHTML = `
+                            <div class="flex flex-col items-center justify-center h-screen bg-green-50 text-center p-4">
+                                <i class="fa-solid fa-circle-check text-6xl text-green-500 mb-4 animate-bounce"></i>
+                                <h1 class="text-3xl font-bold text-gray-800">Thank You!</h1>
+                                <p class="text-lg text-gray-600 mt-2">Your feedback has been submitted successfully.</p>
+                                <p class="text-gray-500 text-sm mt-8 p-4 bg-white rounded-lg border border-gray-200">
+                                    You can safely close this tab now.
+                                </p>
+                            </div>
+                        `;
+                    }
+                }, 3000);
 
             } catch (e) {
                 console.error("Error:", e);
                 alert("Error submitting feedback. Please check internet connection.");
-            } finally {
                 sendBtn.disabled = false;
                 sendBtn.innerHTML = 'Submit Feedback (పంపండి)';
-            }
+            } 
         }
     </script>
 </body>
