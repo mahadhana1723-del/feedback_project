@@ -48,6 +48,12 @@
         .star-rating label:hover ~ label {
             color: #fbbf24; /* Gold */
         }
+        
+        /* Special styles for the highlighted card */
+        .highlight-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(251, 191, 36, 0.3);
+        }
     </style>
 </head>
 <body class="py-10 px-4">
@@ -164,10 +170,51 @@
             </div>
 
             <div class="question-card bg-gray-50 p-5 rounded-xl border border-gray-200">
-                <p class="font-bold text-gray-800 mb-1">9. The first page of our LR has been appreciated by DEE/TRSO/GTL and implemented uniformly across all lobbies of GTL division, Please share your suggestions or ideas, if any, to further improve its usefulness and effectiveness.:</p>
-                <p class="text-sm text-gray-600 mb-2"></p>
-                <p class="telugu-text mb-3">మన LR మొదటి పేజీని DEE/TRSO/GTL వారు ప్రశంసించారు మరియు GTL డివిజన్ అన్ని లాబీలలో అమలు చేశారు. దీనిని మరింత మెరుగుపరచడానికి మీ సలహాలు లేదా ఆలోచనలు ఉంటే తెలియజేయండి.</p>
-                <textarea id="q10" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type here (Required) / ఇక్కడ తప్పనిసరిగా రాయండి..."></textarea>
+                <p class="font-bold text-gray-800 mb-1">
+                    9. The newly designed first page of our LR has received appreciation from DEE/TRSO/GTL and has been implemented uniformly across all lobbies of the GTL division. We value your opinion on this initiative. How do you rate its usefulness and design?
+                </p>
+                <p class="telugu-text mb-3">
+                    మన LR యొక్క కొత్త మొదటి పేజీ డిజైన్‌ను DEE/TRSO/GTL వారు ప్రశంసించారు మరియు GTL డివిజన్‌లోని అన్ని లాబీలలో దీనిని అమలు చేశారు. ఈ కొత్త మార్పు మీకు ఎంతగా ఉపయోగపడుతోంది? దీనిపై మీ అభిప్రాయాన్ని తెలపండి.
+                </p>
+                
+                <div class="space-y-3 mt-4">
+                    <label class="flex items-center space-x-3 cursor-pointer p-3 border border-gray-200 rounded-lg hover:bg-blue-50 transition bg-white shadow-sm" onclick="showDescriptionBox()">
+                        <input type="radio" name="q10" value="Excellent" class="w-5 h-5 text-blue-600 focus:ring-blue-500">
+                        <span class="text-gray-700 font-medium">Excellent Initiative (చాలా బాగుంది)</span>
+                    </label>
+                    
+                    <label class="flex items-center space-x-3 cursor-pointer p-3 border border-gray-200 rounded-lg hover:bg-blue-50 transition bg-white shadow-sm" onclick="showDescriptionBox()">
+                        <input type="radio" name="q10" value="Very Useful" class="w-5 h-5 text-blue-600 focus:ring-blue-500">
+                        <span class="text-gray-700 font-medium">Very Useful (చాలా ఉపయోగకరంగా ఉంది)</span>
+                    </label>
+                    
+                    <label class="flex items-center space-x-3 cursor-pointer p-3 border border-gray-200 rounded-lg hover:bg-blue-50 transition bg-white shadow-sm" onclick="showDescriptionBox()">
+                        <input type="radio" name="q10" value="Good" class="w-5 h-5 text-blue-600 focus:ring-blue-500">
+                        <span class="text-gray-700 font-medium">Good (బాగుంది)</span>
+                    </label>
+                    
+                    <label class="flex items-center space-x-3 cursor-pointer p-3 border border-gray-200 rounded-lg hover:bg-blue-50 transition bg-white shadow-sm" onclick="showDescriptionBox()">
+                        <input type="radio" name="q10" value="Not Useful" class="w-5 h-5 text-red-600 focus:ring-red-500">
+                        <span class="text-red-700 font-medium">Not Useful (ఉపయోగకరంగా లేదు)</span>
+                    </label>
+                    
+                    <div id="q10-desc-container" class="hidden mt-4 animate-fade-in p-4 bg-blue-50 rounded-lg border border-blue-100">
+                        <label class="block text-xs text-blue-800 font-bold mb-2 uppercase">
+                            <i class="fa-solid fa-pen mr-1"></i> Add a Suggestion / Reason (Optional):
+                        </label>
+                        <textarea id="q10-other-text" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" rows="2" placeholder="Write here... (ఇక్కడ రాయండి)"></textarea>
+                        
+                        <div class="flex justify-end mt-2">
+                            <button type="button" onclick="saveSuggestion()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 px-6 rounded shadow-sm transition transform active:scale-95">
+                                OK <i class="fa-solid fa-check ml-1"></i>
+                            </button>
+                        </div>
+                        
+                        <p id="q10-saved-msg" class="hidden text-green-600 text-xs font-bold mt-2 text-right">
+                            <i class="fa-solid fa-circle-check"></i> Details Saved!
+                        </p>
+                    </div>
+                </div>
             </div>
 
             <div class="question-card bg-gray-50 p-5 rounded-xl border border-gray-200">
@@ -177,19 +224,29 @@
                 <textarea id="q11" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type here (Required) / ఇక్కడ తప్పనిసరిగా రాయండి..."></textarea>
             </div>
 
-            <div class="question-card bg-blue-50 p-6 rounded-xl border-2 border-yellow-500 shadow-xl relative mt-4">
-                <div class="absolute -top-3 left-4 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded shadow-sm tracking-wider">OVERALL RATING</div>
-                <p class="font-bold text-blue-900 text-lg mb-1">
-                    <i class="fa-solid fa-award text-yellow-600 mr-2"></i>
-                    How would you rate the overall performance of the CCC in the last 6 months?
-                </p>
-                <p class="telugu-text mb-4 text-blue-800 font-medium">గత 6 నెలల్లో CCC యొక్క మొత్తం పనితీరును మీరు ఎలా రేట్ చేస్తారు?</p>
-                <div class="star-rating justify-end md:justify-start">
-                    <input type="radio" id="q9-5" name="q9" value="5"><label for="q9-5" class="hover:scale-110 transition-transform"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q9-4" name="q9" value="4"><label for="q9-4" class="hover:scale-110 transition-transform"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q9-3" name="q9" value="3"><label for="q9-3" class="hover:scale-110 transition-transform"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q9-2" name="q9" value="2"><label for="q9-2" class="hover:scale-110 transition-transform"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q9-1" name="q9" value="1"><label for="q9-1" class="hover:scale-110 transition-transform"><i class="fa-solid fa-star"></i></label>
+            <div class="question-card highlight-card bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl border-4 border-yellow-500 shadow-2xl relative mt-10">
+                
+                <div class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-sm font-bold px-6 py-2 rounded-full shadow-lg tracking-widest border-2 border-white flex items-center gap-2 z-10 whitespace-nowrap">
+                    <i class="fa-solid fa-star text-yellow-200 animate-pulse"></i> OVERALL RATING <i class="fa-solid fa-star text-yellow-200 animate-pulse"></i>
+                </div>
+
+                <div class="text-center mt-2 mb-6">
+                    <p class="font-bold text-gray-800 text-xl mb-2">
+                        How would you rate the overall performance of the CCC in the last 6 months?
+                    </p>
+                    <p class="telugu-text text-gray-600 font-medium text-lg">
+                        గత 6 నెలల్లో CCC యొక్క మొత్తం పనితీరును మీరు ఎలా రేట్ చేస్తారు?
+                    </p>
+                </div>
+
+                <div class="flex justify-center">
+                    <div class="star-rating gap-2">
+                        <input type="radio" id="q9-5" name="q9" value="5"><label for="q9-5" class="hover:scale-125 transition-transform p-1" title="Excellent"><i class="fa-solid fa-star text-3xl"></i></label>
+                        <input type="radio" id="q9-4" name="q9" value="4"><label for="q9-4" class="hover:scale-125 transition-transform p-1" title="Good"><i class="fa-solid fa-star text-3xl"></i></label>
+                        <input type="radio" id="q9-3" name="q9" value="3"><label for="q9-3" class="hover:scale-125 transition-transform p-1" title="Average"><i class="fa-solid fa-star text-3xl"></i></label>
+                        <input type="radio" id="q9-2" name="q9" value="2"><label for="q9-2" class="hover:scale-125 transition-transform p-1" title="Poor"><i class="fa-solid fa-star text-3xl"></i></label>
+                        <input type="radio" id="q9-1" name="q9" value="1"><label for="q9-1" class="hover:scale-125 transition-transform p-1" title="Very Poor"><i class="fa-solid fa-star text-3xl"></i></label>
+                    </div>
                 </div>
             </div>
 
@@ -206,7 +263,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
         import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
-        // 🔥 Existing Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyCpEMtX1eP7YwZDH0qLBRGci6VkhBgcJVo",
             authDomain: "feedback-4ace7.firebaseapp.com",
@@ -219,6 +275,38 @@
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+
+        // Show description box for ALL options
+        window.showDescriptionBox = function() {
+            const container = document.getElementById('q10-desc-container');
+            container.classList.remove('hidden');
+            
+            // Reset visual state on option change
+            const msg = document.getElementById('q10-saved-msg');
+            const area = document.getElementById('q10-other-text');
+            msg.classList.add('hidden');
+            area.classList.remove('border-green-500', 'ring-1', 'ring-green-500', 'bg-green-50');
+            area.classList.add('border-gray-300');
+        };
+
+        // Handle OK Button Click
+        window.saveSuggestion = function() {
+            const area = document.getElementById('q10-other-text');
+            const msg = document.getElementById('q10-saved-msg');
+            const text = area.value.trim();
+
+            // Simple validation: If "Not Useful" is checked, text shouldn't be empty?
+            // For now, let's just confirm action visually
+            
+            // Visual Feedback for "Saved"
+            area.classList.remove('border-gray-300');
+            area.classList.add('border-green-500', 'ring-1', 'ring-green-500', 'bg-green-50');
+            
+            msg.classList.remove('hidden');
+            setTimeout(() => {
+                msg.classList.add('hidden');
+            }, 3000);
+        };
 
         window.sendFeedback = async function() {
             const sendBtn = document.getElementById('sendBtn');
@@ -244,17 +332,33 @@
                 feedbackData[`q${i}`] = parseInt(selected.value); 
             }
 
-            // 2. Validate Text Answers
-            const q10Val = document.getElementById('q10').value.trim();
-            const q11Val = document.getElementById('q11').value.trim();
-
-            if(q10Val === "") {
-                alert("Please answer Question 9 (LR Suggestions).\nదయచేసి 9వ ప్రశ్నకు (LR Suggestions) సమాధానం రాయండి.");
-                const el = document.getElementById('q10');
-                el.focus();
-                el.closest('.question-card').scrollIntoView({behavior: "smooth", block: "center"});
+            // 2. Validate Q9 (Internal ID q10)
+            const q10Radio = document.querySelector('input[name="q10"]:checked');
+            if (!q10Radio) {
+                alert("Please select an option for Question 9 (LR Feedback).\nదయచేసి 9వ ప్రశ్నకు (LR Feedback) ఒక ఆప్షన్ ఎంచుకోండి.");
+                const questionCard = document.querySelector('input[name="q10"]').closest('.question-card');
+                questionCard.scrollIntoView({behavior: "smooth", block: "center"});
                 return;
             }
+
+            // Combine Radio Value + Suggestion Text
+            const q10Text = document.getElementById('q10-other-text').value.trim();
+            
+            // Mandatory check if 'Not Useful' is selected
+            if(q10Radio.value === "Not Useful" && q10Text === "") {
+                 alert("Please specify why it is 'Not Useful'.\n'Not Useful' అని ఎంచుకున్నారు కాబట్టి దయచేసి కారణం రాయండి.");
+                 document.getElementById('q10-other-text').focus();
+                 return;
+            }
+
+            if(q10Text !== "") {
+                feedbackData['q10'] = q10Radio.value + " - " + q10Text;
+            } else {
+                feedbackData['q10'] = q10Radio.value;
+            }
+
+            // 3. Validate Q10 (Internal ID q11) - TEXT AREA
+            const q11Val = document.getElementById('q11').value.trim();
             if(q11Val === "") {
                 alert("Please answer Question 10 (General Suggestions).\nదయచేసి 10వ ప్రశ్నకు (General Suggestions) సమాధానం రాయండి.");
                 const el = document.getElementById('q11');
@@ -262,11 +366,9 @@
                 el.closest('.question-card').scrollIntoView({behavior: "smooth", block: "center"});
                 return;
             }
-            
-            feedbackData['q10'] = q10Val;
             feedbackData['q11'] = q11Val;
-
-            // 3. Validate OVERALL RATING
+            
+            // 4. Validate OVERALL RATING (Last Q)
             const q9Selected = document.querySelector('input[name="q9"]:checked');
             if (!q9Selected) {
                 alert("Please provide the Overall Rating (Last Question).\nదయచేసి చివరన ఉన్న 'Overall Rating' ఇవ్వండి.");
@@ -288,7 +390,6 @@
                 await addDoc(collection(db, "feedbacks"), feedbackData);
 
                 // --- SUCCCESS: Show Thank You Screen Immediately ---
-                // Replace the entire body with a Thank You Message
                 document.body.innerHTML = `
                     <div class="flex flex-col items-center justify-center min-h-screen text-center p-6 animate-fade-in">
                         <div class="bg-white p-10 rounded-3xl shadow-2xl border border-white/20 max-w-md w-full transform transition-all scale-100">
