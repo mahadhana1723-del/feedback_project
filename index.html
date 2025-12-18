@@ -162,8 +162,6 @@
                 </div>
             </div>
 
-          
-
             <div class="question-card bg-gray-50 p-5 rounded-xl border border-gray-200">
                 <p class="font-bold text-gray-800 mb-1">9. The first page of our LR has been appreciated by DEE/TRSO/GTL and implemented uniformly across all lobbies of GTL division, Please share your suggestions or ideas, if any, to further improve its usefulness and effectiveness.:</p>
                 <p class="text-sm text-gray-600 mb-2"></p>
@@ -229,15 +227,15 @@
                 date: serverTimestamp()
             };
 
-            // 1. Validate Star Ratings (Q1 to Q9)
-            for (let i = 1; i <= 9; i++) {
+            // 1. Validate Star Ratings (Q1 to Q8 only)
+            // మేము 1 నుండి 8 వరకు మాత్రమే లూప్ చేస్తున్నాము, ఎందుకంటే అవి పై వరుసలో ఉన్నాయి.
+            for (let i = 1; i <= 8; i++) {
                 const selected = document.querySelector(`input[name="q${i}"]:checked`);
                 if (!selected) {
                     alert(`Please give a rating for Question ${i} \nదయచేసి ${i}వ ప్రశ్నకు రేటింగ్ ఇవ్వండి.`);
                     
                     const questionCard = document.querySelector(`input[name="q${i}"]`).closest('.question-card');
                     questionCard.scrollIntoView({behavior: "smooth", block: "center"});
-                    // Add highlight for error
                     questionCard.classList.add('ring-4', 'ring-red-400');
                     setTimeout(() => questionCard.classList.remove('ring-4', 'ring-red-400'), 2000);
                     
@@ -246,23 +244,45 @@
                 feedbackData[`q${i}`] = parseInt(selected.value); 
             }
 
-            // 2. Validate Text Answers (Q10 & Q11) - MANDATORY
+            // 2. Validate Text Answers (Visually Q9 & Q10, Internal IDs q10 & q11)
+            // HTMLలో నంబర్లు 9 మరియు 10 టెక్స్ట్ బాక్సులకు ఉన్నాయి.
             const q10Val = document.getElementById('q10').value.trim();
             const q11Val = document.getElementById('q11').value.trim();
 
             if(q10Val === "") {
-                alert("Please answer Question 10.\n10వ ప్రశ్నకు సమాధానం రాయండి. (లేదా 'Nil' అని టైప్ చేయండి)");
-                document.getElementById('q10').focus();
+                // ఇది ఐడి q10, కానీ స్క్రీన్ పై 9వ ప్రశ్న
+                alert("Please answer Question 9 (LR Suggestions).\nదయచేసి 9వ ప్రశ్నకు (LR Suggestions) సమాధానం రాయండి.");
+                const el = document.getElementById('q10');
+                el.focus();
+                el.closest('.question-card').scrollIntoView({behavior: "smooth", block: "center"});
                 return;
             }
             if(q11Val === "") {
-                alert("Please answer Question 11.\n11వ ప్రశ్నకు సమాధానం రాయండి. (లేదా 'Nil' అని టైప్ చేయండి)");
-                document.getElementById('q11').focus();
+                // ఇది ఐడి q11, కానీ స్క్రీన్ పై 10వ ప్రశ్న
+                alert("Please answer Question 10 (General Suggestions).\nదయచేసి 10వ ప్రశ్నకు (General Suggestions) సమాధానం రాయండి.");
+                const el = document.getElementById('q11');
+                el.focus();
+                el.closest('.question-card').scrollIntoView({behavior: "smooth", block: "center"});
                 return;
             }
             
             feedbackData['q10'] = q10Val;
             feedbackData['q11'] = q11Val;
+
+            // 3. Validate OVERALL RATING (Internal Name q9, Visually Last Card)
+            // ఇది చివరన ఉన్న గోల్డ్ బాక్స్.
+            const q9Selected = document.querySelector('input[name="q9"]:checked');
+            if (!q9Selected) {
+                alert("Please provide the Overall Rating (Last Question).\nదయచేసి చివరన ఉన్న 'Overall Rating' ఇవ్వండి.");
+                
+                const questionCard = document.querySelector('input[name="q9"]').closest('.question-card');
+                questionCard.scrollIntoView({behavior: "smooth", block: "center"});
+                questionCard.classList.add('ring-4', 'ring-red-400');
+                setTimeout(() => questionCard.classList.remove('ring-4', 'ring-red-400'), 2000);
+                
+                return;
+            }
+            feedbackData['q9'] = parseInt(q9Selected.value);
 
             // Disable button
             sendBtn.disabled = true;
