@@ -18,7 +18,7 @@
         }
         .telugu-text {
             font-family: 'Ramabhadra', sans-serif;
-            line-height: 1.5;
+            line-height: 1.4;
         }
         .hindi-text {
             font-family: 'Mukta', sans-serif;
@@ -80,6 +80,7 @@
                 <h1 class="text-2xl font-bold mb-6 tracking-wide uppercase text-yellow-400 drop-shadow-md">RU DEPOT CREW FEEDBACK FORM</h1>
 
                 <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4 max-w-2xl mx-auto shadow-xl text-left">
+                    
                     <div class="bg-blue-950/40 rounded-lg p-3 space-y-4 border border-blue-400/30 shadow-inner">
                         
                         <div class="flex items-start gap-3">
@@ -94,7 +95,7 @@
                         <div class="flex items-start gap-3">
                             <span class="text-xl mt-1">❌</span> 
                             <div>
-                                <p class="font-bold text-white text-sm">No name, number, ID, or personal details are required.</p>
+                                <p class="font-bold text-white text-sm">Name, number, ID, or personal details are NOT required.</p>
                                 <p class="text-[0.8rem] text-yellow-100 mt-0.5 hindi-text">नाम, नंबर, आईडी या व्यक्तिगत विवरण की आवश्यकता नहीं है।</p>
                                 <p class="text-[0.8rem] text-blue-200 telugu-text">పేరు, నంబర్, ID లేదా వ్యక్తిగత వివరాలు అవసరం లేదు.</p>
                             </div>
@@ -265,8 +266,8 @@
                     </label>
                     
                     <label class="flex items-center space-x-3 cursor-pointer p-3 border border-gray-200 rounded-lg hover:bg-blue-50 transition bg-white shadow-sm" onclick="showDescriptionBox()">
-                        <input type="radio" name="q10" value="Good" class="w-5 h-5 text-blue-600 focus:ring-blue-500">
-                        <span class="text-gray-700 font-medium">Good (బాగుంది)</span>
+                        <input type="radio" name="q10" value="Need Improvements" class="w-5 h-5 text-blue-600 focus:ring-blue-500">
+                        <span class="text-gray-700 font-medium">Need Improvements (మెరుగుపరచాలి / सुधार की आवश्यकता है)</span>
                     </label>
                     
                     <label class="flex items-center space-x-3 cursor-pointer p-3 border border-gray-200 rounded-lg hover:bg-blue-50 transition bg-white shadow-sm" onclick="showDescriptionBox()">
@@ -279,16 +280,6 @@
                             <i class="fa-solid fa-pen mr-1"></i> Add a Suggestion / Reason (Optional):
                         </label>
                         <textarea id="q10-other-text" class="w-full p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors" rows="2" placeholder="Write here... (ఇక్కడ రాయండి)"></textarea>
-                        
-                        <div class="flex justify-end mt-2">
-                            <button type="button" onclick="saveSuggestion()" class="bg-green-600 hover:bg-green-700 text-white text-xs font-bold py-2 px-6 rounded shadow-sm transition transform active:scale-95">
-                                OK <i class="fa-solid fa-check ml-1"></i>
-                            </button>
-                        </div>
-                        
-                        <p id="q10-saved-msg" class="hidden text-green-600 text-xs font-bold mt-2 text-right">
-                            <i class="fa-solid fa-circle-check"></i> Details Saved!
-                        </p>
                     </div>
                 </div>
             </div>
@@ -297,7 +288,7 @@
                 <p class="font-bold text-gray-800 mb-1 text-sm md:text-base">10. General Suggestions/Complaints/Appreciation:</p>
                 <p class="hindi-text text-gray-600 mb-1 text-sm">आने वाले वर्षों में स्टाफ के कामकाज और प्रबंधन को बेहतर बनाने के लिए कृपया अपने सुझाव, शिकायतें या प्रशंसा साझा करें।</p>
                 <p class="telugu-text text-gray-500 mb-3 text-sm">రాబోయే సంవత్సరాల్లో స్టాఫ్ పనితీరు మరియు మేనేజ్‌మెంట్‌ను మెరుగుపరచడానికి మీ సలహాలు, ఫిర్యాదులు లేదా అభినందనలు ఉంటే దయచేసి తెలియజేయండి.</p>
-                <textarea id="q11" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Type here (Required) / ఇక్కడ తప్పనిసరిగా రాయండి..."></textarea>
+                <textarea id="q11" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: Fog device, Walkie-Talkie, CC, TPC, CMS, Leaves, Mileage issues etc... (Type here / ఇక్కడ రాయండి)"></textarea>
             </div>
 
             <div class="question-card highlight-card bg-gradient-to-br from-amber-50 to-orange-50 p-8 rounded-2xl border-4 border-yellow-500 shadow-2xl relative mt-10">
@@ -371,26 +362,10 @@
             const container = document.getElementById('q10-desc-container');
             container.classList.remove('hidden');
             
-            const msg = document.getElementById('q10-saved-msg');
+            // Just ensure border resets, no saved msg or button now
             const area = document.getElementById('q10-other-text');
-            msg.classList.add('hidden');
             area.classList.remove('border-green-500', 'ring-1', 'ring-green-500', 'bg-green-50');
             area.classList.add('border-gray-300');
-        };
-
-        // Handle OK Button Click for Q9
-        window.saveSuggestion = function() {
-            const area = document.getElementById('q10-other-text');
-            const msg = document.getElementById('q10-saved-msg');
-            const text = area.value.trim();
-
-            area.classList.remove('border-gray-300');
-            area.classList.add('border-green-500', 'ring-1', 'ring-green-500', 'bg-green-50');
-            
-            msg.classList.remove('hidden');
-            setTimeout(() => {
-                msg.classList.add('hidden');
-            }, 3000);
         };
 
         window.sendFeedback = async function() {
@@ -403,7 +378,7 @@
 
             // 1. Validate Star Ratings (Q1 to Q8) - SKIP Q5
             for (let i = 1; i <= 8; i++) {
-                if(i === 5) continue; // Skip Q5 (It's Yes/No now)
+                if(i === 5) continue; 
 
                 const selected = document.querySelector(`input[name="q${i}"]:checked`);
                 if (!selected) {
@@ -430,7 +405,6 @@
                 return;
             }
             
-            // If No, Text is Mandatory
             if(q5Selected.value === "No") {
                 const reason = document.getElementById('q5-reason').value.trim();
                 if(reason === "") {
@@ -438,11 +412,10 @@
                     document.getElementById('q5-reason').focus();
                     return;
                 }
-                feedbackData['q5'] = "No - " + reason; // Store as string
+                feedbackData['q5'] = "No - " + reason; 
             } else {
                 feedbackData['q5'] = "Yes";
             }
-
 
             // 3. Validate Q9 (Internal ID q10)
             const q10Radio = document.querySelector('input[name="q10"]:checked');
