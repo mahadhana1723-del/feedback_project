@@ -127,9 +127,9 @@
         <form id="feedbackForm" class="p-6 space-y-8">
             
             <div class="question-card bg-gray-50 p-5 rounded-xl border border-gray-200">
-                <p class="font-bold text-gray-800 mb-1 text-sm md:text-base">1. How satisfied are you with the handling of leave requests?</p>
-                <p class="hindi-text text-gray-600 mb-1 text-sm">छुट्टी के अनुरोधों (Leave Requests) को संभालने के तरीके से आप कितने संतुष्ट हैं?</p>
-                <p class="telugu-text text-gray-500 mb-3 text-sm">సెలవు అభ్యర్థనలను (Leave Requests) పరిష్కరించే విధానంతో మీరు ఎంత సంతృప్తిగా ఉన్నారు?</p>
+                <p class="font-bold text-gray-800 mb-1 text-sm md:text-base">1. How satisfied are you with the handling of leave requests and adjustments?</p>
+                <p class="hindi-text text-gray-600 mb-1 text-sm">छुट्टी के अनुरोधों और समायोजन (Leave requests and adjustments) को संभालने के तरीके से आप कितने संतुष्ट हैं?</p>
+                <p class="telugu-text text-gray-500 mb-3 text-sm">సెలవు అభ్యర్థనలను మరియు సర్దుబాట్లను (Leave requests and adjustments) పరిష్కరించే విధానంతో మీరు ఎంత సంతృప్తిగా ఉన్నారు?</p>
                 <div class="star-rating justify-end md:justify-start">
                     <input type="radio" id="q1-5" name="q1" value="5"><label for="q1-5" title="5 Stars"><i class="fa-solid fa-star"></i></label>
                     <input type="radio" id="q1-4" name="q1" value="4"><label for="q1-4" title="4 Stars"><i class="fa-solid fa-star"></i></label>
@@ -179,15 +179,27 @@
             </div>
 
             <div class="question-card bg-gray-50 p-5 rounded-xl border border-gray-200">
-                <p class="font-bold text-gray-800 mb-1 text-sm md:text-base">5. How satisfied are you that the CCC answers phone calls and provides timely responses when contacted?</p>
-                <p class="hindi-text text-gray-600 mb-1 text-sm">संपर्क करने पर CCC द्वारा फोन कॉल का उत्तर देने और समय पर प्रतिक्रिया देने से आप कितने संतुष्ट हैं?</p>
-                <p class="telugu-text text-gray-500 mb-3 text-sm">ఫోన్ చేసినప్పుడు CCC ఫోన్ లిఫ్ట్ చేయడం మరియు సరైన సమయంలో స్పందించడం పట్ల మీరు సంతృప్తిగా ఉన్నారా?</p>
-                <div class="star-rating justify-end md:justify-start">
-                    <input type="radio" id="q5-5" name="q5" value="5"><label for="q5-5"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q5-4" name="q5" value="4"><label for="q5-4"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q5-3" name="q5" value="3"><label for="q5-3"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q5-2" name="q5" value="2"><label for="q5-2"><i class="fa-solid fa-star"></i></label>
-                    <input type="radio" id="q5-1" name="q5" value="1"><label for="q5-1"><i class="fa-solid fa-star"></i></label>
+                <p class="font-bold text-gray-800 mb-1 text-sm md:text-base">5. Are you able to avail your periodical rests on time?</p>
+                <p class="hindi-text text-gray-600 mb-1 text-sm">क्या आप अपना आवधिक आराम (Periodical Rest) समय पर ले पा रहे हैं?</p>
+                <p class="telugu-text text-gray-500 mb-3 text-sm">మీరు మీ పీరియాడికల్ రెస్ట్ (PR) ను సమయానికి తీసుకోగలుగుతున్నారా?</p>
+                
+                <div class="flex gap-6 mt-3">
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white border border-gray-200 px-4 py-2 rounded-lg shadow-sm hover:bg-green-50 transition" onclick="toggleQ5Reason(false)">
+                        <input type="radio" name="q5" value="Yes" class="w-5 h-5 text-green-600 focus:ring-green-500">
+                        <span class="font-bold text-green-700">YES (అవును / हाँ)</span>
+                    </label>
+                    
+                    <label class="flex items-center space-x-2 cursor-pointer bg-white border border-gray-200 px-4 py-2 rounded-lg shadow-sm hover:bg-red-50 transition" onclick="toggleQ5Reason(true)">
+                        <input type="radio" name="q5" value="No" class="w-5 h-5 text-red-600 focus:ring-red-500">
+                        <span class="font-bold text-red-700">NO (కాదు / नहीं)</span>
+                    </label>
+                </div>
+
+                <div id="q5-reason-container" class="hidden mt-4 animate-fade-in p-4 bg-red-50 rounded-lg border border-red-100">
+                    <label class="block text-xs text-red-800 font-bold mb-2 uppercase">
+                        <i class="fa-solid fa-circle-exclamation mr-1"></i> Please specify the reason (కారణం చెప్పండి):
+                    </label>
+                    <textarea id="q5-reason" class="w-full p-3 border border-red-200 bg-white rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500" rows="2" placeholder="Write here... (ఇక్కడ రాయండి)"></textarea>
                 </div>
             </div>
 
@@ -343,12 +355,22 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        // Show description box for ALL options
+        // Toggle Q5 Reason Box (Yes/No)
+        window.toggleQ5Reason = function(show) {
+            const container = document.getElementById('q5-reason-container');
+            if(show) {
+                container.classList.remove('hidden');
+                document.getElementById('q5-reason').focus();
+            } else {
+                container.classList.add('hidden');
+            }
+        };
+
+        // Show description box for Q9 (LR)
         window.showDescriptionBox = function() {
             const container = document.getElementById('q10-desc-container');
             container.classList.remove('hidden');
             
-            // Reset visual state on option change
             const msg = document.getElementById('q10-saved-msg');
             const area = document.getElementById('q10-other-text');
             msg.classList.add('hidden');
@@ -356,13 +378,12 @@
             area.classList.add('border-gray-300');
         };
 
-        // Handle OK Button Click
+        // Handle OK Button Click for Q9
         window.saveSuggestion = function() {
             const area = document.getElementById('q10-other-text');
             const msg = document.getElementById('q10-saved-msg');
             const text = area.value.trim();
 
-            // Visual Feedback for "Saved"
             area.classList.remove('border-gray-300');
             area.classList.add('border-green-500', 'ring-1', 'ring-green-500', 'bg-green-50');
             
@@ -380,8 +401,10 @@
                 date: serverTimestamp()
             };
 
-            // 1. Validate Star Ratings (Q1 to Q8 only)
+            // 1. Validate Star Ratings (Q1 to Q8) - SKIP Q5
             for (let i = 1; i <= 8; i++) {
+                if(i === 5) continue; // Skip Q5 (It's Yes/No now)
+
                 const selected = document.querySelector(`input[name="q${i}"]:checked`);
                 if (!selected) {
                     alert(`Please give a rating for Question ${i} \nదయచేసి ${i}వ ప్రశ్నకు రేటింగ్ ఇవ్వండి.`);
@@ -396,7 +419,32 @@
                 feedbackData[`q${i}`] = parseInt(selected.value); 
             }
 
-            // 2. Validate Q9 (Internal ID q10)
+            // 2. Validate Q5 (Yes/No)
+            const q5Selected = document.querySelector('input[name="q5"]:checked');
+            if(!q5Selected) {
+                alert("Please answer Question 5 (Periodical Rest). \nదయచేసి 5వ ప్రశ్నకు సమాధానం ఇవ్వండి.");
+                const qCard = document.querySelector('input[name="q5"]').closest('.question-card');
+                qCard.scrollIntoView({behavior: "smooth", block: "center"});
+                qCard.classList.add('ring-4', 'ring-red-400');
+                setTimeout(() => qCard.classList.remove('ring-4', 'ring-red-400'), 2000);
+                return;
+            }
+            
+            // If No, Text is Mandatory
+            if(q5Selected.value === "No") {
+                const reason = document.getElementById('q5-reason').value.trim();
+                if(reason === "") {
+                    alert("Since you selected 'No' for Q5, please specify the reason.\n5వ ప్రశ్నకు 'No' ఎంచుకున్నారు కాబట్టి దయచేసి కారణం రాయండి.");
+                    document.getElementById('q5-reason').focus();
+                    return;
+                }
+                feedbackData['q5'] = "No - " + reason; // Store as string
+            } else {
+                feedbackData['q5'] = "Yes";
+            }
+
+
+            // 3. Validate Q9 (Internal ID q10)
             const q10Radio = document.querySelector('input[name="q10"]:checked');
             if (!q10Radio) {
                 alert("Please select an option for Question 9 (LR Feedback).\nదయచేసి 9వ ప్రశ్నకు (LR Feedback) ఒక ఆప్షన్ ఎంచుకోండి.");
@@ -421,7 +469,7 @@
                 feedbackData['q10'] = q10Radio.value;
             }
 
-            // 3. Validate Q10 (Internal ID q11) - TEXT AREA
+            // 4. Validate Q10 (Internal ID q11) - TEXT AREA
             const q11Val = document.getElementById('q11').value.trim();
             if(q11Val === "") {
                 alert("Please answer Question 10 (General Suggestions).\nదయచేసి 10వ ప్రశ్నకు (General Suggestions) సమాధానం రాయండి.");
@@ -432,7 +480,7 @@
             }
             feedbackData['q11'] = q11Val;
             
-            // 4. Validate OVERALL RATING (Last Q)
+            // 5. Validate OVERALL RATING (Last Q)
             const q9Selected = document.querySelector('input[name="q9"]:checked');
             if (!q9Selected) {
                 alert("Please provide the Overall Rating (Last Question).\nదయచేసి చివరన ఉన్న 'Overall Rating' ఇవ్వండి.");
